@@ -1,0 +1,5 @@
+/config/statusbar_config.json
+.venv
+.idea
+/dist/
+src/statusbar_time_tracker/__pycache__
