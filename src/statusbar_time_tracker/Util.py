@@ -22,7 +22,7 @@ class Util:
             raw_users = soup.find_all("td", {"class": "alert"})
             for user in raw_users:
                 raw_user_state = user.__dict__["attrs"]["class"][1]
-                clean_username = re.sub('[^A-Za-z ]', '', str(user.__dict__["next_element"])).strip()
+                clean_username = str(user.__dict__["next_element"]).strip()
                 user_state = WorkState.error
                 if raw_user_state == "alert-success":
                     user_state = WorkState.work
