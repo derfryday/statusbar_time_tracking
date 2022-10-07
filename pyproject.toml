@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "statusbar-time-tracker"
-version = "0.1.0"
+version = "0.1.1"
 description = "smalltime time tracker for MacOS status bar"
 authors = ["derfryday <contact@fryday.dev>"]
 include = ["statusbar_time_tracker_app.py"]
