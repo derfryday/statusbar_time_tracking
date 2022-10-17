@@ -90,7 +90,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "rumps"
-version = "0.3.0"
+version = "0.4.0"
 description = "Ridiculously Uncomplicated MacOS Python Statusbar apps."
 category = "main"
 optional = false
@@ -98,6 +98,9 @@ python-versions = "*"
 
 [package.dependencies]
 pyobjc-framework-Cocoa = "*"
+
+[package.extras]
+dev = ["pytest (>=4.3)", "pytest-mock (>=2.0.0)", "tox (>=3.8)"]
 
 [[package]]
 name = "soupsieve"
@@ -116,14 +119,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
 
 [package.extras]
-brotli = ["brotlicffi (>=0.8.0)", "brotli (>=1.0.9)", "brotlipy (>=0.6.0)"]
-secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
+secure = ["certifi", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "ipaddress", "pyOpenSSL (>=0.14)"]
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "6df8d2549e74e0155cc1e8e54130cb6a2b26427e3e2b29e8adc24f6d94738442"
+content-hash = "41dd185cb5b65888270a5cbdb2be36e5860eaa6540c9662fdaec11a1ca644ced"
 
 [metadata.files]
 beautifulsoup4 = [
@@ -163,10 +166,12 @@ pyobjc-framework-cocoa = [
     {file = "pyobjc_framework_Cocoa-8.5-cp38-cp38-macosx_11_0_universal2.whl", hash = "sha256:898359ac1f76eedec8aa156847682378a8950824421c40edb89391286e607dc4"},
     {file = "pyobjc_framework_Cocoa-8.5-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:baa2947f76b119a3360973d74d57d6dada87ac527bab9a88f31596af392f123c"},
 ]
-requests = []
+requests = [
+    {file = "requests-2.28.1-py3-none-any.whl", hash = "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"},
+    {file = "requests-2.28.1.tar.gz", hash = "sha256:7c5599b102feddaa661c826c56ab4fee28bfd17f5abca1ebbe3e7f19d7c97983"},
+]
 rumps = [
-    {file = "rumps-0.3.0-py2-none-any.whl", hash = "sha256:e5ea41ce62312a0f1fa4280fc587bd8b5c6ff7ed0be219752c95f013109d148a"},
-    {file = "rumps-0.3.0.tar.gz", hash = "sha256:c8df19347c661cac8906fffd410727c6000f978a6c8c44a2803a1786b35c4c1f"},
+    {file = "rumps-0.4.0.tar.gz", hash = "sha256:17fb33c21b54b1e25db0d71d1d793dc19dc3c0b7d8c79dc6d833d0cffc8b1596"},
 ]
 soupsieve = [
     {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},

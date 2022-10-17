@@ -3,7 +3,7 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
-import re
+
 from statusbar_time_tracker.Enum import WorkState
 import urllib3
 
