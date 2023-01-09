@@ -14,8 +14,8 @@ cd statusbar_time_tracking
 config file location: `~/.config/statusbar_config.json`
 ## There are 2 ways to configure the statusbar time tracker
 1. manually copy `config/statusbar_config.dist.json` to `~/.config/statusbar_config.json` and change the values according to your needs.
-   1. you can get your password hash by running `unset HISTFILE; echo -n "your_password" | sha1sum | awk '{print $1}')`
-2. run the setup by running `poetry run python statusbar_time_tracker_app.py --setup` and follow the wizard.
+   1. you can get your password hash by running `unset HISTFILE; echo -n "your_password" | sha1sum | awk '{print $1}'`
+2. run the setup by running `statusbar_time_tracker --setup` and follow the wizard.
 
 ### configuration parameters:
 
