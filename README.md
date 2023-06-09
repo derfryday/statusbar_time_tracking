@@ -1,6 +1,6 @@
 # Installation
 ```bash
-wget "https://github.com/derfryday/statusbar_time_trackign/releases/latest/download/StatusbarTimeTracker"
+wget "https://github.com/derfryday/statusbar_time_tracking/releases/latest/download/StatusbarTimeTracker"
 
 ./StatusbarTimeTracker --setup
 ```
