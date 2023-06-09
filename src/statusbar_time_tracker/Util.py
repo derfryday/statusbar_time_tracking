@@ -1,10 +1,14 @@
 import logging
+import subprocess
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
+from statusbar_time_tracker import LaunchAgent
 from statusbar_time_tracker.Enum import WorkState
+from statusbar_time_tracker.Updater import Updater
+
 import urllib3
 
 urllib3.disable_warnings()
@@ -15,7 +19,7 @@ class Util:
     def get_users(index_url: str) -> list[tuple[str, WorkState]]:
         enriched_users: list[tuple[str, WorkState]] = []
 
-        status_response = requests.get(index_url, verify=False)
+        status_response = requests.get(index_url, verify=False, timeout=1)
         response_content = status_response.content
         if status_response.status_code == 200:
             soup = BeautifulSoup(response_content, "html.parser")
@@ -45,7 +49,7 @@ class Util:
             "name": username,
             "secret": password_hash
         }
-        response = requests.get(url=tracker_url, params=args)
+        response = requests.get(url=tracker_url, params=args, timeout=60)
         if response.status_code != 200:
             logging.error(
                 "Could not toggle tracking state for user \"%s\"! Statuscode: %s\nContent:\n%s",
@@ -64,3 +68,9 @@ class Util:
         }
 
         return icon_map[work_state]
+
+    @staticmethod
+    def update_and_restart() -> None:
+        Updater.update()
+        LaunchAgent.restart_launchd_agent()
+

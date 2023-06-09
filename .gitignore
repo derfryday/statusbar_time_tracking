@@ -3,4 +3,12 @@
 .idea
 /dist/
 src/statusbar_time_tracker/__pycache__
+de.derfryday.statusbar-time-tracker_tmp.plist
 de.derfryday.statusbar-time-tracker.plist
+de.derfryday.statusbar-time-tracker_native_tmp.plist
+de.derfryday.statusbar-time-tracker_native.plist
+StatusbarTimeTracker.app
+StatusbarTimeTracker
+app.*
+_CodeSignature
+src/statusbar_time_tracker/resources/Info.plist

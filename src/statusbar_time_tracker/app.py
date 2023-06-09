@@ -5,6 +5,8 @@ import logging
 import sys
 from pathlib import Path
 
+from statusbar_time_tracker.Agent import LaunchAgent
+
 from statusbar_time_tracker import StatusBarTimeTracker
 from argparse import ArgumentParser
 import hashlib
@@ -28,72 +30,52 @@ def configure() -> None:
     new_config_file.write_text(json.dumps(new_config), encoding="utf-8")
 
 
-def install() -> None:
-    target_launch_agents_path: Path = Path.home() / "Library/LaunchAgents"
-    logging.info("Launch agent will be installed into %s", str(target_launch_agents_path))
-    file_name: str = "statusbar_time_tracking.plist"
-    launch_file = target_launch_agents_path / file_name
-    template_file: Path = Path(__file__).resolve().parent / "resources" / file_name
-    raw_template = template_file.read_text(encoding="utf-8")
-
-    python_path: Path = Path(__file__).resolve() / ".venv/bin/python"
-    script_path: Path = Path(__file__).resolve()
-    project_path: Path = script_path.parent
-    raw_template = (
-        raw_template
-        .replace("%PYTHON_PATH%", str(python_path))
-        .replace("%SCRIPT_PATH%", str(script_path))
-        .replace("%PROJECT_PATH%", str(project_path))
-    )
-    logging.info("Installing launch agent %s", str(launch_file))
-    launch_file.write_text(raw_template, encoding="utf-8")
-
-
-def uninstall() -> None:
-    target_launch_agents_path: Path = Path("~/Library/LaunchAgents").resolve()
-    file_name: str = "statusbar_time_tracking.plist"
-    launch_file = target_launch_agents_path / file_name
-    logging.info("Uninstalling %s", str(launch_file))
-    launch_file.unlink(missing_ok=True)
-
-
 def setup() -> None:
     configure()
-    install()
+    LaunchAgent.create_launchd_file()
 
 
 def main() -> None:
-    config_path = Path.home() / ".config/statusbar_config.json"
-
     parser = ArgumentParser(description="Statusbar Time Tracker command line interface")
     parser.add_argument("--setup", dest="run_setup", action="store_true", default=False)
     parser.add_argument("--install", dest="install", action="store_true", default=False)
     parser.add_argument("--uninstall", dest="uninstall", action="store_true", default=False)
     parser.add_argument("--configure", dest="configure", action="store_true", default=False)
-    parser.add_argument("--verbose", "-v", dest="verbose", action="store_true", default=False)
+    parser.add_argument("--log-level", dest="log_level", choices=["debug", "info", "warning", "error"], default="info")
 
     args = parser.parse_args()
 
+    log_file: Path = Path.home() / "Library/Logs/StatusbarTimeTracker.log"
+
+    logging.basicConfig(filename=str(log_file), level=getattr(logging, args.log_level.upper()))
+    logging.getLogger().addHandler(logging.StreamHandler())
+    config_path = Path.home() / ".config/statusbar_config.json"
+
     if args.run_setup:
+        logging.info("Starting Setup wizard...")
         setup()
         sys.exit(0)
     elif args.install:
-        install()
+        LaunchAgent.create_launchd_file()
+        LaunchAgent.enable_launchd_service()
+        LaunchAgent.start_launchd_agent()
         sys.exit(0)
     elif args.uninstall:
-        uninstall()
+        LaunchAgent.disable_launchd_service()
+        LaunchAgent.delete_launchd_file()
         sys.exit(0)
     elif args.configure:
         configure()
         sys.exit(0)
 
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-
     if not config_path.exists():
         logging.error("Config file does not exist, please run setup or configuration wizard!")
         sys.exit(1)
     else:
-        config = json.loads(config_path.read_text(encoding="utf-8"))
-        app = StatusBarTimeTracker(statusbar_config=config)
+        app: StatusBarTimeTracker = StatusBarTimeTracker(config_path=config_path)
+        logging.info("Starting StatusbarTimeTracker...")
         app.run()
+
+
+if __name__ == "__main__":
+    main()
