@@ -8,18 +8,16 @@ from pathlib import Path
 from rumps import App
 from rumps import MenuItem
 from rumps import timer
-import rumps
 
-from statusbar_time_tracker.Agent import LaunchAgent
-from statusbar_time_tracker.Updater import Updater
+from statusbar_time_tracker.agent import LaunchAgent
+from statusbar_time_tracker.updater import Updater
 
-rumps.debug_mode(True)
 from importlib import metadata
 
 import webbrowser
 
-from statusbar_time_tracker.Enum import WorkState
-from statusbar_time_tracker.Util import Util
+from statusbar_time_tracker.enums import WorkState
+from statusbar_time_tracker.util import Util
 
 
 class StatusBarTimeTracker(App):
@@ -57,9 +55,18 @@ class StatusBarTimeTracker(App):
         if menu_item.title == "Check for Updates":
             if Updater.update_available():
                 logging.info("Updates found!")
+                Util.send_notification(
+                    "Statusbar Time Tracker",
+                    "Update",
+                    "Updates found. Install updates at Settings>Install Update and Restart"
+                )
                 menu_item.title = "Install Update and Restart"
+            else:
+                logging.info("No updates found!")
+                Util.send_notification("Statusbar Time Tracker", "Update", "No updates found.")
         elif menu_item.title == "Install Update and Restart":
             Updater.update()
+            LaunchAgent.restart_launchd_agent()
 
     def open_config(self, _):
         os.system(f"open {str(self.config_path)}")

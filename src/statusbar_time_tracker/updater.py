@@ -4,9 +4,13 @@ from distutils.version import LooseVersion
 from importlib import metadata
 from pathlib import Path
 from typing import Any
+from typing import Final
 
 import requests
 import orjson as json
+
+BINARY_NAME: Final[str] = "StatusbarTimeTracker"
+GITHUB_URL: Final[str] = "https://api.github.com/repos/derfryday/statusbar_time_tracking/releases/latest"
 
 
 class Updater:
@@ -19,7 +23,7 @@ class Updater:
             raise Exception("No assets found for latest release!")
 
         new_binary_url: str = \
-        [asset["browser_download_url"] for asset in assets if asset["name"] == "StatusbarTimeTracker"][0]
+            [asset["browser_download_url"] for asset in assets if asset["name"] == BINARY_NAME][0]
         logging.info("Found new binary at url: %s", new_binary_url)
 
         response = requests.get(url=new_binary_url)
@@ -31,7 +35,7 @@ class Updater:
 
     @staticmethod
     def get_latest_version_info_from_github() -> dict[str, Any]:
-        url: str = "https://api.github.com/repos/derfryday/statusbar_time_tracking/releases/latest"
+        url: str = GITHUB_URL
         response = requests.get(url=url)
 
         if response.status_code == 200:

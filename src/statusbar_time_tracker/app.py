@@ -5,7 +5,7 @@ import logging
 import sys
 from pathlib import Path
 
-from statusbar_time_tracker.Agent import LaunchAgent
+from statusbar_time_tracker.agent import LaunchAgent
 
 from statusbar_time_tracker import StatusBarTimeTracker
 from argparse import ArgumentParser

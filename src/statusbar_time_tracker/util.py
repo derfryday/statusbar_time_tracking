@@ -1,13 +1,13 @@
 import logging
-import subprocess
+import os
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
 
 from statusbar_time_tracker import LaunchAgent
-from statusbar_time_tracker.Enum import WorkState
-from statusbar_time_tracker.Updater import Updater
+from statusbar_time_tracker.enums import WorkState
+from statusbar_time_tracker.updater import Updater
 
 import urllib3
 
@@ -74,3 +74,6 @@ class Util:
         Updater.update()
         LaunchAgent.restart_launchd_agent()
 
+    @staticmethod
+    def send_notification(title: str, subtitle: str, message: str):
+        os.system(f"osascript -e 'display notification \"{message}\" with title \"{title}\" subtitle \"{subtitle}\"'")
